@@ -1,14 +1,16 @@
-body {
-    background-color: #166fae;
+html, body {
+    background-color: black;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
 }
 
-.logo {
-    opacity: 0;
-
-    -webkit-transition: all 1.3s 0.3s;
-            transition: all 1.3s 0.3s;
+svg circle {
+    -webkit-transition: all 3s;
+            transition: all 3s;
 }
 
-.logo.loaded {
-    opacity: 1;
+svg circle.animate-out {
+    -webkit-transition: all 0.5s;
+            transition: all 0.5s;
 }

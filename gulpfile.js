@@ -6,12 +6,7 @@ var source = require('vinyl-source-stream');
 var sourcemaps = require('gulp-sourcemaps');
 var watchify = require('watchify');
 
-var bundler = watchify(browserify('./src/js/index.jsx', watchify.args));
-
-// Reactify
-var reactify = require('reactify');
-bundler.transform(reactify)
-bundler.transform('brfs');
+var bundler = watchify(browserify('./src/js/index.js', watchify.args));
 
 gulp.task('js', bundle); // Add task: 'gulp js'
 bundler.on('update', bundle); // Bundle when dependencies are updated
@@ -25,12 +20,6 @@ function bundle() {
     .on('error', onError) // Log errors
 
     .pipe(source('index.js'))
-
-    // // Sourcemaps (optional)
-    // .pipe(buffer()).pipe(sourcemaps.init({
-    //     loadMaps: true
-    // })) // Loads map from Browserify file
-    // .pipe(sourcemaps.write('./')) // Creates .map file
 
     .pipe(gulp.dest('./public/js'));
 }
