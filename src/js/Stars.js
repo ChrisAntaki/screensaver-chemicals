@@ -1,4 +1,4 @@
-var Pool = require('./Pool');
+var Pool = require('dom-pool');
 var Star = require('./Star');
 
 function Stars() {
