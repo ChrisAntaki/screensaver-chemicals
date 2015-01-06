@@ -14,6 +14,7 @@ function Star(params) {
     this.endX = params.endX;
     this.endY = params.endY;
     this.pool = params.pool;
+    this.queue = params.queue;
     this.size = params.size;
     this.startX = params.startX;
     this.startY = params.startY;
@@ -39,9 +40,21 @@ function Star(params) {
 
     this.target.appendChild(this.el);
 
-    setTimeout(this.animateIn.bind(this), 20);
-    setTimeout(this.animateOut.bind(this), 2040);
-    setTimeout(this.destroy.bind(this), 2560);
+    var now = Date.now();
+    this.queue.set({
+        callback: this.animateIn.bind(this),
+        time: now + 20,
+    });
+    
+    this.queue.set({
+        callback: this.animateOut.bind(this),
+        time: now + 2040,
+    });
+    
+    this.queue.set({
+        callback: this.destroy.bind(this),
+        time: now + 2560,
+    });
 }
 
 Star.prototype.animateIn = function() {

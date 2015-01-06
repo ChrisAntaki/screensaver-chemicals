@@ -1,8 +1,11 @@
 var Pool = require('dom-pool');
+var TimeQueue = require('./time-queue');
 var Star = require('./Star');
 
 function Stars() {
     this.svg = document.querySelector('svg');
+
+    this.queue = new TimeQueue();
 
     this.pool = new Pool({
         namespace: 'http://www.w3.org/2000/svg',
@@ -15,7 +18,9 @@ function Stars() {
 }
 
 Stars.prototype.requestAnimationFrame = function() {
-    requestAnimationFrame(this.requestAnimationFrame);    
+    requestAnimationFrame(this.requestAnimationFrame);
+
+    this.queue.tick();
 
     this.createStar();
 }
@@ -25,6 +30,7 @@ Stars.prototype.createStar = function() {
         endX: rand(innerWidth),
         endY: rand(innerHeight),
         pool: this.pool,
+        queue: this.queue,
         size: rand(30) + 10,
         startX: rand(innerWidth),
         startY: rand(innerHeight),
