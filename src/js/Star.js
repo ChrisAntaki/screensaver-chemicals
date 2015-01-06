@@ -20,6 +20,11 @@ function Star(params) {
     this.startY = params.startY;
     this.target = params.target;
 
+    this.setTimers();
+    this.setupDOMNode();
+}
+
+Star.prototype.setupDOMNode = function() {
     this.el = this.pool.pop();
     this.el.setAttribute('fill', '#' + getRandomColor());
     this.el.setAttribute('r', this.size);
@@ -31,16 +36,16 @@ function Star(params) {
             '0' +
         ')';
 
-    this.el.style.transform = translate;
-    this.el.style.webkitTransform = translate;
-
+    this.el.style.transform = this.el.style.webkitTransform = translate;
     this.el.style.fillOpacity = 0;
-
     this.el.removeAttribute('class');
 
     this.target.appendChild(this.el);
+};
 
+Star.prototype.setTimers = function() {
     var now = Date.now();
+    
     this.queue.set({
         callback: this.animateIn.bind(this),
         time: now + 20,
@@ -55,7 +60,7 @@ function Star(params) {
         callback: this.destroy.bind(this),
         time: now + 2560,
     });
-}
+};
 
 Star.prototype.animateIn = function() {
     var translate =
@@ -65,20 +70,16 @@ Star.prototype.animateIn = function() {
             '0' +
         ')';
 
-    this.el.style.transform = translate;
-    this.el.style.webkitTransform = translate;
-
+    this.el.style.transform = this.el.style.webkitTransform = translate;
     this.el.style.fillOpacity = 1;
 }
 
 Star.prototype.animateOut = function() {
     this.el.setAttribute('class', 'animate-out');
-
     this.el.style.fillOpacity = 0;
 }
 
 Star.prototype.destroy = function() {
-    this.target.removeChild(this.el);
     this.pool.push(this.el);
 }
 
