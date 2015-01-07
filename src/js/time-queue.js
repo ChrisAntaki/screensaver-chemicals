@@ -14,7 +14,7 @@ TimeQueue.prototype.tick = function() {
             continue;
         }
 
-        this.queue[i].callback();
+        this.queue[i].callback.call(this.queue[i].context);
         this.queue.splice(i, 1);
     }
 };
@@ -23,6 +23,7 @@ TimeQueue.prototype.tick = function() {
 
 function TimeQueueItem(params) {
     this.callback = params.callback;
+    this.context = params.context || this;
     this.time = params.time;
 }
 

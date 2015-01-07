@@ -47,17 +47,20 @@ Star.prototype.setTimers = function() {
     var now = Date.now();
     
     this.queue.set({
-        callback: this.animateIn.bind(this),
+        callback: this.animateIn,
+        context: this,
         time: now + 20,
     });
     
     this.queue.set({
-        callback: this.animateOut.bind(this),
+        callback: this.animateOut,
+        context: this,
         time: now + 2040,
     });
     
     this.queue.set({
-        callback: this.destroy.bind(this),
+        callback: this.destroy,
+        context: this,
         time: now + 2560,
     });
 };

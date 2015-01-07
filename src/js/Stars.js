@@ -15,15 +15,22 @@ function Stars() {
 
     this.requestAnimationFrame = this.requestAnimationFrame.bind(this);
     this.requestAnimationFrame();
+
+    this.queueCreateStar();
 }
+
+Stars.prototype.queueCreateStar = function() {
+    this.queue.set({
+        callback: this.createStar,
+        context: this,
+        time: Date.now() + 16,
+    });
+};
 
 Stars.prototype.requestAnimationFrame = function() {
     requestAnimationFrame(this.requestAnimationFrame);
-
     this.queue.tick();
-
-    this.createStar();
-}
+};
 
 Stars.prototype.createStar = function() {
     var star = new Star({
@@ -36,6 +43,8 @@ Stars.prototype.createStar = function() {
         startY: rand(innerHeight),
         target: this.svg,
     });
+
+    this.queueCreateStar();
 };
 
 function rand(maximum) {
