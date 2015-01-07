@@ -84,6 +84,7 @@ Star.prototype.animateOut = function() {
 
 Star.prototype.destroy = function() {
     this.pool.push(this.el);
+    this.target.removeChild(this.el);
 }
 
 module.exports = Star;
