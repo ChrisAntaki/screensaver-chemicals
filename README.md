@@ -3,7 +3,7 @@ Chemical themed HTML5 screensaver
 
 ```sh
 # Make sure you have gulp & http-server installed globally
-npm install -g http-server gulp
+npm install -g gulp http-server
 
 # Compile the project's JavaScript with gulp
 gulp js
