@@ -1,19 +1,16 @@
 var Pool = require('dom-pool');
 var TimeQueue = require('./time-queue');
-var Star = require('./Star');
+var Chemical = require('./Chemical');
 
-function Stars() {
+function Chemicals() {
     this.lastFrames = [];
 
-    this.createStarDelay = 128;
-
-    this.svg = document.querySelector('svg');
+    this.createChemicalDelay = 128;
 
     this.queue = new TimeQueue();
 
     this.pool = new Pool({
-        namespace: 'http://www.w3.org/2000/svg',
-        tagName: 'circle',
+        tagName: 'div'
     });
     this.pool.allocate(100);
 
@@ -21,24 +18,24 @@ function Stars() {
     this.requestAnimationFrame();
 
     this.queueDisplayFPS();
-    this.queueCreateStar();
+    this.queueCreateChemical();
 }
 
-Stars.prototype.queueCreateStar = function() {
+Chemicals.prototype.queueCreateChemical = function() {
     this.queue.set({
-        callback: this.createStar,
+        callback: this.createChemical,
         context: this,
-        time: Date.now() + this.createStarDelay,
+        time: Date.now() + this.createChemicalDelay,
     });
 };
 
-Stars.prototype.requestAnimationFrame = function() {
+Chemicals.prototype.requestAnimationFrame = function() {
     requestAnimationFrame(this.requestAnimationFrame);
     this.queue.tick();
     this.calculateFPS();
 };
 
-Stars.prototype.calculateFPS = function() {
+Chemicals.prototype.calculateFPS = function() {
     if (this.lastFrames.length > 60) {
         this.lastFrames.shift();
     }
@@ -46,22 +43,22 @@ Stars.prototype.calculateFPS = function() {
     this.lastFrames.push(Date.now());
 }
 
-Stars.prototype.createStar = function() {
-    var star = new Star({
+Chemicals.prototype.createChemical = function() {
+    new Chemical({
         endX: rand(innerWidth),
         endY: rand(innerHeight),
         pool: this.pool,
         queue: this.queue,
-        size: rand(30) + 10,
+        size: rand(60) + 20,
         startX: rand(innerWidth),
         startY: rand(innerHeight),
-        target: this.svg,
+        target: document.body,
     });
 
-    this.queueCreateStar();
+    this.queueCreateChemical();
 };
 
-Stars.prototype.queueDisplayFPS = function() {
+Chemicals.prototype.queueDisplayFPS = function() {
     this.queue.set({
         callback: this.displayFPS,
         context: this,
@@ -69,20 +66,20 @@ Stars.prototype.queueDisplayFPS = function() {
     });
 };
 
-Stars.prototype.displayFPS = function() {
+Chemicals.prototype.displayFPS = function() {
     var length = this.lastFrames.length;
     var difference = (this.lastFrames[length - 1] - this.lastFrames[0]) / (length - 1);
     var fps = 1000 / difference;
     console.log(fps);
 
-    if (fps < 55 && this.createStarDelay < 1000) {
-        this.createStarDelay += 10;
-        // console.log('Added 10ms to this.createStarDelay');
-        // console.log('this.createStarDelay:', this.createStarDelay);
-    } else if (fps > 59 && this.createStarDelay > 16) {
-        this.createStarDelay -= 1;
-        // console.log('Removed 1ms from this.createStarDelay');
-        // console.log('this.createStarDelay:', this.createStarDelay);
+    if (fps < 55 && this.createChemicalDelay < 1000) {
+        this.createChemicalDelay += 10;
+        // console.log('Added 10ms to this.createChemicalDelay');
+        // console.log('this.createChemicalDelay:', this.createChemicalDelay);
+    } else if (fps > 59 && this.createChemicalDelay > 32) {
+        this.createChemicalDelay -= 1;
+        // console.log('Removed 1ms from this.createChemicalDelay');
+        // console.log('this.createChemicalDelay:', this.createChemicalDelay);
     }
 
     this.queueDisplayFPS();
@@ -92,4 +89,4 @@ function rand(maximum) {
     return Math.floor(Math.random() * (maximum + 1));
 }
 
-module.exports = Stars;
+module.exports = Chemicals;

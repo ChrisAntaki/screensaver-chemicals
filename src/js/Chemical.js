@@ -10,7 +10,7 @@ function getRandomColor() {
     return colors[key];
 }
 
-function Star(params) {
+function Chemical(params) {
     this.endX = params.endX;
     this.endY = params.endY;
     this.pool = params.pool;
@@ -24,10 +24,10 @@ function Star(params) {
     this.setupDOMNode();
 }
 
-Star.prototype.setupDOMNode = function() {
+Chemical.prototype.setupDOMNode = function() {
     this.el = this.pool.pop();
-    this.el.setAttribute('fill', '#' + getRandomColor());
-    this.el.setAttribute('r', this.size);
+    this.el.style.backgroundColor = '#' + getRandomColor();
+    this.el.style.width = this.el.style.height = this.size + 'px';
 
     var translate =
         'translate3d(' +
@@ -37,27 +37,27 @@ Star.prototype.setupDOMNode = function() {
         ')';
 
     this.el.style.transform = this.el.style.webkitTransform = translate;
-    this.el.style.fillOpacity = 0;
+    this.el.style.opacity = 0;
     this.el.removeAttribute('class');
 
     this.target.appendChild(this.el);
 };
 
-Star.prototype.setTimers = function() {
+Chemical.prototype.setTimers = function() {
     var now = Date.now();
-    
+
     this.queue.set({
         callback: this.animateIn,
         context: this,
         time: now + 20,
     });
-    
+
     this.queue.set({
         callback: this.animateOut,
         context: this,
         time: now + 2040,
     });
-    
+
     this.queue.set({
         callback: this.destroy,
         context: this,
@@ -65,7 +65,7 @@ Star.prototype.setTimers = function() {
     });
 };
 
-Star.prototype.animateIn = function() {
+Chemical.prototype.animateIn = function() {
     var translate =
         'translate3d(' +
             this.endX + 'px,' +
@@ -74,17 +74,17 @@ Star.prototype.animateIn = function() {
         ')';
 
     this.el.style.transform = this.el.style.webkitTransform = translate;
-    this.el.style.fillOpacity = 1;
+    this.el.style.opacity = 1;
 }
 
-Star.prototype.animateOut = function() {
+Chemical.prototype.animateOut = function() {
     this.el.setAttribute('class', 'animate-out');
-    this.el.style.fillOpacity = 0;
+    this.el.style.opacity = 0;
 }
 
-Star.prototype.destroy = function() {
+Chemical.prototype.destroy = function() {
     this.pool.push(this.el);
     this.target.removeChild(this.el);
 }
 
-module.exports = Star;
+module.exports = Chemical;
