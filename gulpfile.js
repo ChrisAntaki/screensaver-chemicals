@@ -16,6 +16,8 @@ function onError(e) {
 }
 
 function bundle() {
+    console.log('Bundling...');
+
     return bundler.bundle()
     .on('error', onError) // Log errors
 
