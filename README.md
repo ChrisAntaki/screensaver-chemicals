@@ -13,3 +13,5 @@ http-server -p80
 
 # The screensaver will be available at http://localhost
 ```
+
+This project use [dom-pool](https://github.com/ChrisAntaki/dom-pool) to increase FPS.
