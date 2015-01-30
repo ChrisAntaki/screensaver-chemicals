@@ -29,7 +29,7 @@ Chemical.prototype.setupDOMNode = function() {
 
     var color = '#' + getRandomColor();
     this.el.style.backgroundColor = color;
-    this.el.style.boxShadow = '0 0 40px ' + color;
+    this.el.style.boxShadow = '0 0 ' + (30 + (this.size / 10)) + 'px ' + color;
     this.el.style.width = this.el.style.height = this.size + 'px';
 
     var translate =
